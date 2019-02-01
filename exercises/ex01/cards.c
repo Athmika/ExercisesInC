@@ -7,13 +7,20 @@ Code from Head First C page 37, modified by Athmika
 #include <stdio.h>
 #include <stdlib.h>
 
-/*This function displays the current count to the command prompt*/
+/*This function displays the current count to the command prompt
+	
+	count: value of final count after count is updated
+*/
 void displayCount(int count)
 {
 	printf("Current count: %i\n", count);
 }
 
-/*This function either increments or decrements the count depending on the value of the card*/
+/*This function either increments or decrements the count depending on the value of the card
+ val: value of the function as determined by the main function
+ count: Value of count is updated each time the user enters a card and returned
+
+*/
 int updateCount(int val, int count)
 {
 	if ((val > 2) && (val < 7)) 
@@ -28,7 +35,10 @@ int updateCount(int val, int count)
 	return count;
 }
 
-/*This function makes sure that the user doesn't enter an invalid card*/
+/*This function makes sure that the user doesn't enter an invalid card
+
+  card_name[]: First three characters the user entered as their card
+*/
 int throwException(char card_name[])
 {
 	int val = atoi(card_name);
