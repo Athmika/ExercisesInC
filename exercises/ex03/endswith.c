@@ -14,20 +14,38 @@ License: Creative Commons Attribution-ShareAlike 3.0
 
 */
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
 /* endswith: Checks whether s ends with suffix.
-
 s: string
 suffix: string
 returns: 1 if true, 0 otherwise
 */
 int endswith(char *s, char *suffix)
 {
-    // TODO: Fill this in!
+    
+    char* startPointer = strstr(s,suffix);
+    if (startPointer != NULL)
+    {
+        char* endofs = strlen(s) + s;
+        while (startPointer < endofs)
+        {
+            if (*startPointer == *suffix)
+            {
+                 startPointer = startPointer + 1;
+                 suffix += 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    return 1;    
+    }
     return 0;
 }
 
@@ -47,7 +65,7 @@ int main (int argc, char *argv[])
     test_endswith("endswith", "offendswith", 0);
 
     // what's the right answer?
-    // test_endswith("endswith", "", ?);
+    test_endswith("endswith", "", 0);
 
     printf("All tests passed\n");
 }
