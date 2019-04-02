@@ -54,6 +54,9 @@ void print_list(Node *list) {
 */
 Node *pop(Node *list, int *value_p) {
     // FILL THIS IN
+    *value_p = list->val;
+    list = list->next;
+
     return list;
 }
 
@@ -78,6 +81,7 @@ Node *push(Node *list, int value) {
 
   returns: head of modified list
 */
+
 Node *reverse(Node *list) {
     if (list == NULL || list->next == NULL) {
         return list;
