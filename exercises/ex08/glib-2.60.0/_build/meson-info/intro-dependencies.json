@@ -1,0 +1,1 @@
+[{"compile_args": [], "link_args": [], "name": "threads"}, {"compile_args": ["-I/usr/include/libmount", "-I/usr/include/blkid", "-I/usr/include/uuid"], "link_args": ["/usr/lib/x86_64-linux-gnu/libmount.so"], "name": "mount"}]
