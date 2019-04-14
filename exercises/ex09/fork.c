@@ -14,6 +14,12 @@ License: MIT License https://opensource.org/licenses/MIT
 #include <sys/types.h>
 #include <wait.h>
 
+/*
+Process don't share the same global, heap, or stack segments. A copy of the global,heap and stack segments are made in each child process but the segments
+are not shared.
+*/
+
+
 
 // errno is an external global variable that contains
 // error information
@@ -29,6 +35,7 @@ double get_seconds() {
     return tv->tv_sec + tv->tv_usec / 1e6;
 }
 
+int globalVar = 0;
 
 void child_code(int i)
 {
@@ -56,30 +63,32 @@ int main(int argc, char *argv[])
 
     // get the start time
     start = get_seconds();
+    int stackVarible = 1;
 
     for (i=0; i<num_children; i++) {
 
         // create a child process
         printf("Creating child %d.\n", i);
         pid = fork();
-
         /* check for an error */
         if (pid == -1) {
             fprintf(stderr, "fork failed: %s\n", strerror(errno));
             perror(argv[0]);
             exit(1);
         }
-
+    pid = wait(&status);
         /* see if we're the parent or the child */
         if (pid == 0) {
             child_code(i);
+            stackVarible++;
+            globalVar++;
+            printf("%d\n",globalVar);
             exit(i);
         }
     }
 
     /* parent continues */
     printf("Hello from the parent.\n");
-
     for (i=0; i<num_children; i++) {
         pid = wait(&status);
 
