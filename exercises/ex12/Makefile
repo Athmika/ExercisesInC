@@ -1,3 +1,5 @@
+counter_array: counter_array.c
+	gcc -Wall -o hello  counter_array.c -lpthread mutex.c
 
 counter: counter.c
 	gcc -Wall -o counter counter.c -lpthread
