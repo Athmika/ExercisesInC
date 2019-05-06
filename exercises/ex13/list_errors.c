@@ -209,5 +209,26 @@ int main() {
     Node *something = make_something();
     free(something);
 
+    Node node = test_list;
+    while(node != NULL)
+    {
+      free(node);
+      node = node->next;
+    }
+
+    Node node = empty;
+    while(node != NULL)
+    {
+      free(node);
+      node = node->next;
+    }
+
+    Node node = something;
+    while(node != NULL)
+    {
+      free(node);
+      node = node->next;
+    }
+
     return 0;
 }

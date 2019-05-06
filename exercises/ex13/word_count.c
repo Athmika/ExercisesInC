@@ -33,16 +33,21 @@ gint compare_pair(gpointer v1, gpointer v2, gpointer user_data)
 void pair_printor(gpointer value, gpointer user_data)
 {
     Pair *pair = (Pair *) value;
+
     printf("%d\t %s\n", pair->freq, pair->word);
 }
 
+void pair_destructor (gpointer p)
+{
+    Pair *pair = (Pair *) p;
+    g_free(pair);
+}
 
 /* Iterator that prints keys and values. */
 void kv_printor (gpointer key, gpointer value, gpointer user_data)
 {
     printf(user_data, key, *(gint *) value);
 }
-
 
 /* Iterator that adds key-value pairs to a sequence. */
 void accumulator(gpointer key, gpointer value, gpointer user_data)
@@ -75,7 +80,6 @@ void incr(GHashTable* hash, gchar *key)
 int main(int argc, char** argv)
 {
     gchar *filename;
-
     // open the file
     if (argc > 1) {
         filename = argv[1];
@@ -93,7 +97,7 @@ int main(int argc, char** argv)
     (one-L) NUL terminated strings */
     gchar **array;
     gchar line[128];
-    GHashTable* hash = g_hash_table_new(g_str_hash, g_str_equal);
+    GHashTable* hash = g_hash_table_new(g_str_hash, g_str_equal,g_free,g_free);
 
     // read lines from the file and build the hash table
     while (1) {
@@ -104,14 +108,11 @@ int main(int argc, char** argv)
         for (int i=0; array[i] != NULL; i++) {
             incr(hash, array[i]);
         }
+       g_strfreev(array);
     }
     fclose(fp);
-
-    // print the hash table
-    // g_hash_table_foreach(hash, (GHFunc) kv_printor, "Word %s freq %d\n");
-
     // iterate the hash table and build the sequence
-    GSequence *seq = g_sequence_new(NULL);
+    GSequence *seq = g_sequence_new((GDestroyNotify) pair_destructor);
     g_hash_table_foreach(hash, (GHFunc) accumulator, (gpointer) seq);
 
     // iterate the sequence and print the pairs
