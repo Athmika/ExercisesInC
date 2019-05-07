@@ -149,14 +149,31 @@ int main(int argc, char *argv[])
     if (listen(listener_d, 10) == -1)
         error("Can't listen");
 
-    
 
 
     while (1) {
         printf("Waiting for connection on port %d\n", port);
         int connect_d = open_client_socket();
 
-        if (say(connect_d, intro_msg) == -1) {
+
+        read_in(connect_d, buf, sizeof(buf));
+        // TODO (optional): check to make sure they said "Who's there?"
+
+        if(!fork()){
+          close(listener_d);
+          if (say(connect_d, intro_msg) == -1) {
+              close(connect_d);
+              continue;
+          }
+        if (say(connect_d, "Surrealist giraffe.\n") == -1) {
+            close(connect_d);
+            continue;
+        }
+
+        read_in(connect_d, buf, sizeof(buf));
+        // TODO (optional): check to make sure they said "Surrealist giraffe who?"
+
+        if (say(connect_d, "Bathtub full of brightly-colored machine tools.\n") == -1) {
             close(connect_d);
             continue;
         }
